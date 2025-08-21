@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Set character encoding -->
+  <meta charset="UTF-8" />
+  <!-- Ensure proper scaling on mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enhanced Chat App</title>
+
+  <!-- Basic internal CSS styling -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4; /* Light gray background */
+    }
+    #chat-box {
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 300px;
+      overflow-y: scroll; /* Enables vertical scroll for chat overflow */
+      background: #fff; /* White chat background */
+    }
+    input[type="text"] {
+      width: 80%; /* Make input box cover 80% width */
+      padding: 10px;
+    }
+    button {
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Chat header -->
+  <h2>Real-time Chat</h2>
+
+  <!-- Div to hold chat messages -->
+  <div id="chat-box"></div>
+
+  <!-- Text input for user to type a message -->
+  <input type="text" id="message" placeholder="Type your message..." />
+
+  <!-- Button to trigger sendMessage function -->
+  <button onclick="sendMessage()">Send</button>
+
+  <!-- Socket.IO client script (served by the server automatically) -->
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+    // Establish socket connection to the server
+    const socket = io();
+
+    // Reference to the chat display box
+    const chatBox = document.getElementById('chat-box');
+
+    // Listen for 'chat message' events from the server
+    socket.on('chat message', function(msg) {
+      const div = document.createElement('div'); // Create new div for each message
+      div.textContent = msg; // Set message text
+      chatBox.appendChild(div); // Add message to chat box
+      chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+    });
+
+    // Function to emit a new message to the server
+    function sendMessage() {
+      const input = document.getElementById('message');
+      if (input.value.trim() !== '') { // Ignore empty/whitespace-only messages
+        socket.emit('chat message', input.value); // Send message to server
+        input.value = ''; // Clear input box after sending
+      }
+    }
+  </script>
+</body>
+</html>
