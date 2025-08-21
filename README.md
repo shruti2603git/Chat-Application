@@ -1,4 +1,4 @@
-#Chat-Application
+# Chat-Application
 
 Internship task 2 (CODTECH IT SOLUTIONS)
 
@@ -11,3 +11,4 @@ Domain name : Full Stack Web Development
 Duration : 6 weeks
 
 Mentor Name : Neela Santosh Kumar
+
